@@ -39,3 +39,5 @@
 
 # Ignore db test files.
 db/test.*
+
+/config/credentials/production.key

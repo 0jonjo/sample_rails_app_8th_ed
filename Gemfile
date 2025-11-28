@@ -18,6 +18,7 @@ gem "turbo-rails",                "1.1.1"
 gem "stimulus-rails",             "1.0.4"
 gem "jbuilder"
 gem "puma"
+gem "resend"
 gem "bootsnap",                   "1.12.0", require: false
 
 group :development, :test do

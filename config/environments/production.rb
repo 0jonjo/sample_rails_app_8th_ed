@@ -56,8 +56,12 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  # Set host to be used by links generated in mailer templates. Use ENV or credentials.
+  config.action_mailer.default_url_options = { host: ENV.fetch("HOSTNAME", Rails.application.credentials.dig(:email, :host) || "example.com") }
+
+  # Use Resend via custom delivery method (reads API key from credentials or ENV).
+  config.action_mailer.delivery_method = :resend
+  config.action_mailer.raise_delivery_errors = true
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {

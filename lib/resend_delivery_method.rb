@@ -2,8 +2,13 @@ require 'resend'
 
 class ResendDeliveryMethod
   def initialize(options = {})
-    @api_key = Rails.application.credentials.dig(:resend, :api_key) || ENV['RESEND_API_KEY']
-    raise "Resend API key not configured" if @api_key.nil? || @api_key.empty?
+    raw_key = Rails.application.credentials.dig(:resend, :api_key) || ENV['RESEND_API_KEY']
+    # Accept string-like values but reject nil/empty/non-string-like values early with a helpful message
+    @api_key = raw_key.respond_to?(:to_str) ? raw_key.to_str : (raw_key.nil? ? nil : raw_key.to_s)
+    @api_key = @api_key.strip unless @api_key.nil?
+    if @api_key.nil? || @api_key.empty?
+      raise "Resend API key not configured or invalid (expected non-empty string). Got: #{raw_key.inspect}"
+    end
     @client = Resend::Client.new(api_key: @api_key)
   end
 

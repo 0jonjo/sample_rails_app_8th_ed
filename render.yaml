@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: sample-rails-app
+    env: ruby
+    branch: main
+    buildCommand: bundle install --jobs 4 --retry 3
+    startCommand: bundle exec puma -C config/puma.rb
+    releaseCommand: bundle exec rails db:migrate
+    envVars:
+      - key: RAILS_ENV
+        value: production
